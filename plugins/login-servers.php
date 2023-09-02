@@ -13,10 +13,14 @@ function prn($value) {
     '</div>');
 }
 
-class AdminerLoginServers {
+class AdminerLoginServersExt {
 	/** @access protected */
 	var $servers;
-	var $scripts = array("plugins/js/adminer_login_server.js");
+	var $scripts = array(
+        "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js",
+        "plugins/js/adminer_login_server.js",
+	);
+// 	var $scripts = array();
 	var $all_connections = array();
 	var $server_list_file = 'server_list.json';
 	/** Set supported servers
@@ -107,7 +111,7 @@ class AdminerLoginServers {
 
 	function head() {
 		foreach ($this->scripts as $script) {
-			echo "<script type='text/javascript' src='" . h($script) . "'></script>\n";
+			echo script_src($script);
 		}
 	}
 
@@ -117,6 +121,7 @@ class AdminerLoginServers {
 
 	function loginForm() {
 		?>
+
 <div >
     <div style="margin-bottom: 20px;">
         <table id="connections" style="border: 1px dotted darkblue; padding: 5px;">
@@ -131,7 +136,7 @@ class AdminerLoginServers {
                     <td>
                         <select name="filter_env">
                             <option value="" selected="">Все</option>
-                            <?
+                            <?php
                             foreach ($this->env as $env) {
                                 ?>
 
@@ -151,7 +156,7 @@ class AdminerLoginServers {
                 </tr>
             </thead>
             <tbody>
-                <?
+                <?php
                     foreach ($this->servers as $server) {
                         ?>
                         <tr>
@@ -167,7 +172,7 @@ class AdminerLoginServers {
                             <td><input type="button" class="remove_connect"
                                        style="background: indianred; color: whitesmoke; width: 100%" value="Удалить" ></td>
                         </tr>
-                        <?
+                        <?php
                     }
                 ?>
             </tbody>
@@ -175,7 +180,7 @@ class AdminerLoginServers {
                     <td><input type="text" value="" name="name" placeholder="Name"></td>
                     <td>
                         <select name="env">
-                            <?
+                            <?php
                             foreach ($this->env as $env) {
                                 ?>
                                 <option value="<?=$env['value'] ?>" ><?=$env['title'] ?></option>
@@ -219,12 +224,12 @@ class AdminerLoginServers {
                     <select name="auth[driver]"><option value="server" selected="">MySQL</option><option value="sqlite">SQLite 3</option><option value="sqlite2">SQLite 2</option><option value="pgsql">PostgreSQL</option><option value="oracle">Oracle</option><option value="mssql">MS SQL</option><option value="firebird">Firebird (alpha)</option><option value="simpledb">SimpleDB</option><option value="mongo">MongoDB (beta)</option><option value="elastic">Elasticsearch (beta)</option>
                     </select>
 
-			<tr><th><?php echo lang('Username'); ?><td><input id="username" name="auth[username]" value="<?php echo h($_GET["username"]);  ?>">
+			<tr><th><?php echo lang('Username'); ?><td><input id="username" name="auth[username]" value="<?=h($_GET["username"]);  ?>">
 			<tr><th><?php echo lang('Password'); ?><td><input type="password" name="auth[password]">
 			<tr><th><?php echo lang('Database'); ?><td><input name="auth[db]" autocapitalize="off" value="">
 		</table>
 		<p>
-				<div><? echo checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n"; ?></div>
+				<div><?php echo checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n"; ?></div>
 				<br>
 				<input id="submit_connect_button" type="submit" style="width: 300px;height: 30px;" value="<?php echo lang('Login'); ?>">
 		</p>
@@ -235,8 +240,12 @@ class AdminerLoginServers {
         }
     </style>
 </div>
+
+
 <?php
 		return true;
 	}
 	
 }
+
+
