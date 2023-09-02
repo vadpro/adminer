@@ -1,7 +1,7 @@
 version: "3.8"
 
-x-adminer-db-volumes:
-  &acj-adminer-volumes
+x-adminer-volumes:
+  &adminer-volumes
   - ./adminer.css:/var/www/html/adminer.css
   - ./plugins:/var/www/html/plugins/
   - ./server_list.json:/var/www/html/server_list.json
@@ -10,7 +10,7 @@ services:
   adminer-web:
     image: adminer:4.8.1
     volumes:
-      *acj-adminer-volumes
+      *adminer-volumes
     environment:
       - VIRTUAL_HOST=adminer.local
       - VIRTUAL_PORT=8080
